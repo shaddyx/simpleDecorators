@@ -40,7 +40,7 @@ if __name__ == "__main__":
     def func1(param, namedParam):
         global count
         count += 1
-        print "calling try:" + str(count)
+        print ("calling try:" + str(count))
         assert param == 3 and namedParam == 4, "parameters are not pass"
         if count < 8:
             raise Exception("aaa")

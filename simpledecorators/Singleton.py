@@ -12,9 +12,9 @@ if __name__ == "__main__":
     @Singleton
     class TestClass:
         def __init__(self):
-            print "constructor called"
+            print ("constructor called")
 
-    print "starting"
+    print ("starting")
 
     a = TestClass()
     b = TestClass()
