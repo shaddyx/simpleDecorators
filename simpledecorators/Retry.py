@@ -2,15 +2,18 @@ import time
 def Retry(
         count,
         delay=None,
-        exception=Exception,
-        pre=lambda *args, **kwargs: True
+        exception=Exception
     ):
+    """
+
+    :param count: retry count
+    :param delay: delay in seconds after each fail (if can be a function wich will calls after each fail (*args, **kwargs))
+    :param exception: exception to wait (Exception by default)
+    """
     def decorator(fn):
         def wrapper(*args, **kwargs):
             retries=count
             while True:
-                if not pre(*args, **kwargs):
-                    return
                 try:
                     return fn(*args, **kwargs)
                 except exception as e:
@@ -48,7 +51,7 @@ if __name__ == "__main__":
 
     count = 0
     err = False
-    @Retry(10)
+    @Retry(10, delay=0.2)
     def func2():
         global count
         count += 1
