@@ -62,3 +62,16 @@ if __name__ == "__main__":
         err = True
     assert count == 10
     assert err, "Error must be thrown"
+
+    err=False
+    count = 0
+    @Retry(10, delay=0.2, exception=KeyError)
+    def func2():
+        global count
+        count += 1
+        raise Exception()
+    try:
+        func2()
+    except:
+        err = True
+    assert count == 1, "Count must be only 1, but was:" + str(count)
