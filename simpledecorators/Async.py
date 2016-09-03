@@ -2,7 +2,7 @@ from threading import Thread
 
 def Async(executor=None):
     """
-    @type executor: ThreadPool
+    @type executor: simpledecorators.ThreadPool
     """
     def asyncDecorator (func):
         def wrapped(*args, **kwargs):
