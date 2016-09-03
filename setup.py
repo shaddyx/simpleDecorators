@@ -10,4 +10,7 @@ setup(
   download_url = 'https://github.com/shaddyx/simpleDecorators/tarball/0.1',
   keywords = ['testing', 'logging', 'example'], # arbitrary keywords
   classifiers = [],
+  install_requires=[
+          'expiringdict',
+      ]
 )
