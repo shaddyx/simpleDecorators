@@ -1,9 +1,10 @@
 from threading import RLock
 
 
-def Synchronized(arg):
+def Synchronized(lock=None):
+    if not lock:
+        lock=RLock()
     def decorator(fn):
-        lock = RLock()
         def wrapped(*args, **kwargs):
             lock.acquire()
             try:
