@@ -14,7 +14,7 @@ def Timeout(seconds_before_timeout):
         def new_f(*args, **kwargs):
             old = signal.signal(signal.SIGALRM, handler)
             old_time_left = signal.alarm(seconds_before_timeout)
-            if 0 < old_time_left < second_before_timeout: # never lengthen existing timer
+            if 0 < old_time_left < seconds_before_timeout: # never lengthen existing timer
                 signal.alarm(old_time_left)
             start_time = time.time()
             try:
