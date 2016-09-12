@@ -1,22 +1,35 @@
 from threading import Thread
+class AsyncFuture(object):
+    complete=False
+    working=False
+    error=None
+    result=None
 
 def Async(executor=None):
     """
     @type executor: simpledecorators.ThreadPool
+    @rtype: AsyncFuture
     """
     def asyncDecorator (func):
         def wrapped(*args, **kwargs):
+            future = AsyncFuture();
             def threadWrapper():
-                return func(*args, **kwargs)
+                future.working = True
+                try:
+                    future.result=func(*args, **kwargs)
+                    future.complete = True
+                except Exception as e:
+                    future.error=True
+                finally:
+                    future.working=False
             if not executor:
                 thread = Thread(target=threadWrapper)
                 thread.start()
             else:
                 executor.add_task(threadWrapper)
+            return future
         return wrapped
     return asyncDecorator
-
-
 
 if __name__ == "__main__":
     from time import sleep
