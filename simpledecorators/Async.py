@@ -28,6 +28,7 @@ def Async(executor=None):
             else:
                 executor.add_task(threadWrapper)
             return future
+        wrapped.__name__ = fn.__name__ + "Async_wrapped"
         return wrapped
     return asyncDecorator
 

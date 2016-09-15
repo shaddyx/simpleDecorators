@@ -36,7 +36,7 @@ class CacheStorage:
         """
 
 class TimeCacheStorage(CacheStorage):
-    def __init__(self, time_seconds=-1, maxCount=1000):
+    def __init__(self, time_seconds=-1, maxCount=-1):
         """
         :type time_seconds: int
         :param time_seconds: time to live in cache (infinite if default)
@@ -132,13 +132,15 @@ def Cache(
                     logger.debug("Adding to cache by key:" + key)
             return res
 
-        def decorated(*args, **kwargs):
+        def wrapped(*args, **kwargs):
             key = calcKey(*args, **kwargs)
             try:
                 return cacheStorage.get(key)
             except KeyError:
                 return addToCache(key, args, kwargs)
-        return decorated
+
+        wrapped.__name__ = fn.__name__ + "Cache_wrapped"
+        return wrapped
     return decorator
 
 if __name__=="__main__":

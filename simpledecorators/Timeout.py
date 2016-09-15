@@ -11,7 +11,7 @@ def Timeout(seconds_before_timeout):
     def decorate(f):
         def handler(signum, frame):
             raise TimeoutError()
-        def new_f(*args, **kwargs):
+        def wrapped(*args, **kwargs):
             old = signal.signal(signal.SIGALRM, handler)
             old_time_left = signal.alarm(seconds_before_timeout)
             if 0 < old_time_left < seconds_before_timeout: # never lengthen existing timer
@@ -25,6 +25,7 @@ def Timeout(seconds_before_timeout):
                 signal.signal(signal.SIGALRM, old)
                 signal.alarm(old_time_left)
             return result
-        new_f.func_name = f.func_name
-        return new_f
+        wrapped.func_name = f.func_name
+        wrapped.__name__ = fn.__name__ + "LdapAuth_wrapped"
+        return wrapped
     return decorate

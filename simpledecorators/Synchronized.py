@@ -18,6 +18,7 @@ def Synchronized(lock=None):
             finally:
                 lock.release()
 
+        wrapped.__name__ = fn.__name__ + "Synchronized_wrapped"
         return wrapped
 
     return decorator

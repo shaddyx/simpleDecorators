@@ -26,6 +26,7 @@ def Retry(
                         else:
                             time.sleep(delay)
 
+        wrapper.__name__ = fn.__name__ + "Retry_wrapped"
         return wrapper
     return decorator
 
