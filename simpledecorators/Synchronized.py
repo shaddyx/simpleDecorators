@@ -1,3 +1,4 @@
+from functools import wraps
 from threading import RLock
 
 import traceback
@@ -11,14 +12,13 @@ def Synchronized(lock=None):
     if not lock:
         lock=RLock()
     def decorator(fn):
+        @wraps(fn)
         def wrapped(*args, **kwargs):
             lock.acquire()
             try:
                 return fn(*args, **kwargs)
             finally:
                 lock.release()
-
-        wrapped.__name__ = fn.__name__ + "Synchronized_wrapped"
         return wrapped
 
     return decorator

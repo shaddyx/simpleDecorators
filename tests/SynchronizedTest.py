@@ -22,6 +22,17 @@ class FileToolsTest(unittest.TestCase):
         time.sleep(0.6)
         self.assertEqual(self.counter, 2)
 
+    def test_Wrap(self):
+        @Synchronized()
+        def a():
+            pass
+
+        @Synchronized()
+        def b():
+            pass
+
+        self.assertNotEqual(a.__name__, b.__name__)
+
     def tearDown(self):
         pass
 

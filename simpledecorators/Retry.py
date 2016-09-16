@@ -1,4 +1,7 @@
 import time
+from functools import wraps
+
+
 def Retry(
         count,
         delay=None,
@@ -11,6 +14,7 @@ def Retry(
     :param exception: exception to wait (Exception by default)
     """
     def decorator(fn):
+        @wraps(fn)
         def wrapper(*args, **kwargs):
             retries=count
             while True:
@@ -26,7 +30,6 @@ def Retry(
                         else:
                             time.sleep(delay)
 
-        wrapper.__name__ = fn.__name__ + "Retry_wrapped"
         return wrapper
     return decorator
 

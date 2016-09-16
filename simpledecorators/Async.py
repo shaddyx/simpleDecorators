@@ -1,3 +1,4 @@
+from functools import wraps
 from threading import Thread
 class AsyncFuture(object):
     complete=False
@@ -11,6 +12,7 @@ def Async(executor=None):
     @rtype: AsyncFuture
     """
     def asyncDecorator (func):
+        @wraps(func)
         def wrapped(*args, **kwargs):
             future = AsyncFuture();
             def threadWrapper():
@@ -28,7 +30,6 @@ def Async(executor=None):
             else:
                 executor.add_task(threadWrapper)
             return future
-        wrapped.__name__ = fn.__name__ + "Async_wrapped"
         return wrapped
     return asyncDecorator
 

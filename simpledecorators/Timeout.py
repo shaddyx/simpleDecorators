@@ -1,5 +1,7 @@
 import time
 import signal
+from functools import wraps
+
 
 class TimeoutError(Exception):
     def __init__(self, value = "Timed Out"):
@@ -11,6 +13,8 @@ def Timeout(seconds_before_timeout):
     def decorate(f):
         def handler(signum, frame):
             raise TimeoutError()
+
+        @wraps(f)
         def wrapped(*args, **kwargs):
             old = signal.signal(signal.SIGALRM, handler)
             old_time_left = signal.alarm(seconds_before_timeout)
@@ -26,6 +30,5 @@ def Timeout(seconds_before_timeout):
                 signal.alarm(old_time_left)
             return result
         wrapped.func_name = f.func_name
-        wrapped.__name__ = fn.__name__ + "LdapAuth_wrapped"
         return wrapped
     return decorate

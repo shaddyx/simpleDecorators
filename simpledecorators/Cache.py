@@ -1,4 +1,5 @@
 #import time
+from functools import wraps
 from threading import RLock
 
 import expiringdict
@@ -132,14 +133,13 @@ def Cache(
                     logger.debug("Adding to cache by key:" + key)
             return res
 
+        @wraps(fn)
         def wrapped(*args, **kwargs):
             key = calcKey(*args, **kwargs)
             try:
                 return cacheStorage.get(key)
             except KeyError:
                 return addToCache(key, args, kwargs)
-
-        wrapped.__name__ = fn.__name__ + "Cache_wrapped"
         return wrapped
     return decorator
 
