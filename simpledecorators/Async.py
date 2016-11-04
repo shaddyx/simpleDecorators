@@ -26,6 +26,7 @@ def Async(executor=None):
                     future.working=False
             if not executor:
                 thread = Thread(target=threadWrapper)
+                thread.daemon = True
                 thread.start()
             else:
                 executor.add_task(threadWrapper)
