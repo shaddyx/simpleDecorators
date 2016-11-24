@@ -10,8 +10,12 @@ import time
 from abc import ABCMeta, abstractmethod, abstractproperty
 logger = logging.getLogger('Cache')
 
-def __defaultKeyCalculator(*args, **kwargs):
-    return str(args) + "_" + str(kwargs)
+def __defaultKeyCalculator(fn, args, kwargs):
+    if hasattr(fn, "__self__"):
+        clazz = fn.__self__.__class__
+    else:
+        clazz = ""
+    return "{module}_{clazz}{name}{args}{kwargs}".format(clazz=clazz,name=fn.__name__, args=args, kwargs=kwargs, module=fn.__module__)
 
 class CacheStorage:
     @abstractmethod
@@ -135,7 +139,7 @@ def Cache(
 
         @wraps(fn)
         def wrapped(*args, **kwargs):
-            key = calcKey(*args, **kwargs)
+            key = calcKey(fn, args, kwargs)
             try:
                 return cacheStorage.get(key)
             except KeyError:

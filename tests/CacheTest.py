@@ -43,6 +43,21 @@ class SafeTest(unittest.TestCase):
         self.assertEqual(c, d)
         self.assertEqual(called, 1)
 
+    def test_sameArguments(self):
+        @Cache()
+        def func1(a, b, c):
+            return 1
+
+        @Cache()
+        def func2(a, b, c):
+            return 2
+
+        a = func1(1, 2, 3)
+        b = func2(1, 2, 3)
+        self.assertEqual(a, 1)
+        self.assertEqual(b, 2)
+
+
 
 if __name__ == "__main__":
     unittest.main()
