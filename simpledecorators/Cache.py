@@ -2,7 +2,7 @@
 from functools import wraps
 from threading import RLock
 
-import expiringdict
+import cachetools
 import logging
 import os
 import json
@@ -54,7 +54,7 @@ class TimeCacheStorage(CacheStorage):
             maxCount = 9223372036854775807
         self.time_seconds = time_seconds
         self.maxCount = maxCount
-        self.__storage = expiringdict.ExpiringDict(max_age_seconds=time_seconds, max_len=maxCount)
+        self.__storage = cachetools.TTLCache(maxsize=maxCount, ttl=time_seconds)
 
     def hasKey(self, key):
         return self.__storage.has_key(key)
