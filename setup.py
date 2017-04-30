@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
   name = 'simpleDecorators',
   packages = ['simpledecorators'],
-  version = '0.74',
+  version = '0.75',
   description = 'a collection of simple decorators',
   author = 'Anatolii Yakushko',
   author_email = 'shaddyx@gmail.com',
@@ -11,6 +11,6 @@ setup(
   keywords = ['decorators', 'cache', "async"], # arbitrary keywords
   classifiers = [],
   install_requires=[
-          'expiringdict',
+          'cachetools',
       ]
 )
